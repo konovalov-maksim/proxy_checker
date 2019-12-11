@@ -10,9 +10,11 @@ class Loader implements Callback {
     private ExtendedProxy extProxy;
     private OkHttpClient client;
     private Request request;
+    private LoadingListener loadingListener;
 
-    Loader(ExtendedProxy extProxy, long timeout, String url) {
+    Loader(ExtendedProxy extProxy, long timeout, String url, LoadingListener loadingListener) {
         this.extProxy = extProxy;
+        this.loadingListener = loadingListener;
         if (extProxy.getLogin() != null && extProxy.getPass() != null)
             client = new OkHttpClient.Builder()
                     .proxy(extProxy.getProxy())
@@ -36,14 +38,17 @@ class Loader implements Callback {
     public void onFailure(@NotNull Call call, @NotNull IOException e) {
         extProxy.addResponseCode(408);
         extProxy.addResponseTime(0L);
+        loadingListener.onLoadingComplete(extProxy);
     }
 
     @Override
     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-
+        extProxy.addResponseCode(response.code());
+        extProxy.addResponseTime(response.receivedResponseAtMillis() - response.sentRequestAtMillis());
+        loadingListener.onLoadingComplete(extProxy);
     }
 
-    interface loadingListener {
-
+    interface LoadingListener {
+        void onLoadingComplete(ExtendedProxy extProxy);
     }
 }

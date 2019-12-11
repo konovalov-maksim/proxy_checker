@@ -29,6 +29,10 @@ public class ExtendedProxy {
 
     public ExtendedProxy(String address, int port, String login, String pass) {
         this(address, port);
+        setCredentials(login, pass);
+    }
+
+    public void setCredentials(String login, String pass) {
         this.login = login;
         this.pass = pass;
         this.auth = (route, response) -> {
@@ -56,6 +60,10 @@ public class ExtendedProxy {
         return Math.round(responseTimeList.stream().mapToDouble(t -> t).average().orElse(0d));
     }
 
+    public int getChecksCount() {
+        return responseTimeList.size();
+    }
+
     public Proxy getProxy() {
         return proxy;
     }
@@ -79,6 +87,8 @@ public class ExtendedProxy {
     public Authenticator getAuth() {
         return auth;
     }
+
+
 
     @Override
     public String toString() {
