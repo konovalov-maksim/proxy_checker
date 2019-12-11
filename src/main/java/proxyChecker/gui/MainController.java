@@ -5,10 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import proxyChecker.processor.Checker;
 import proxyChecker.processor.ExtendedProxy;
@@ -30,6 +27,11 @@ public class MainController implements Initializable, Checker.CheckingListener {
     private TextArea inputTa;
     @FXML
     private TextField urlTf;
+    @FXML
+    private ProgressBar progBar;
+    @FXML
+    private Label progLbl;
+
     @FXML
     private TableView<ExtendedProxy> outputTable;
     @FXML private TableColumn<ExtendedProxy, String> ipCol;
@@ -61,11 +63,15 @@ public class MainController implements Initializable, Checker.CheckingListener {
         avgTimeCol.setCellValueFactory(new PropertyValueFactory<>("avgTime"));
         isAllOkCol.setCellValueFactory(new PropertyValueFactory<>("isAllOk"));
 
+        TableContextMenu contextMenu = new TableContextMenu(outputTable);
+
         outputTable.setItems(proxies);
+
     }
 
     @FXML
     public void start() {
+        proxies.clear();
         if (urlTf.getText() == null || urlTf.getText().length() == 0) {
             log("URL isn't specified");
             return;
@@ -82,6 +88,7 @@ public class MainController implements Initializable, Checker.CheckingListener {
         checker = new Checker(urlTf.getText(), proxies, this);
         //TODO setChecksCount, setTimeout
         checker.start();
+        log("Checking started");
     }
 
     @FXML

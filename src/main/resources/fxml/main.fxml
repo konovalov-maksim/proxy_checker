@@ -15,6 +15,8 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Separator?>
 
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.ProgressBar?>
 <SplitPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
            xmlns:fx="http://javafx.com/fxml/1" fx:controller="proxyChecker.gui.MainController" orientation="VERTICAL"
            dividerPositions="0.3, 0.85" styleClass="padding-pane">
@@ -43,6 +45,10 @@
         <HBox>
             <Button onAction="#start" text="Let's go!"/>
             <Button onAction="#stop" text="Stop"/>
+            <StackPane HBox.hgrow="ALWAYS">
+                <ProgressBar fx:id="progBar" progress="0.0"/>
+                <Label fx:id="progLbl" text="0.0%"/>
+            </StackPane>
         </HBox>
         <TableView fx:id="outputTable">
             <columns>
