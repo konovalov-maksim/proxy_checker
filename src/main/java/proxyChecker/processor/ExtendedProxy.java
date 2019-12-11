@@ -11,11 +11,12 @@ import java.util.Objects;
 
 public class ExtendedProxy {
 
-    private Proxy proxy;
     private String address;
     private int port;
     private String login;
     private String pass;
+
+    private Proxy proxy;
     private Authenticator auth;
 
     private List<Long> responseTimeList = new ArrayList<>();
@@ -51,7 +52,7 @@ public class ExtendedProxy {
         responsesCodes.add(responseCode);
     }
 
-    public boolean isAllOk() {
+    public boolean getIsAllOk() {
         for (Integer code : responsesCodes) if (code != 200) return false;
         return true;
     }
@@ -88,7 +89,9 @@ public class ExtendedProxy {
         return auth;
     }
 
-
+    public String getIp() {
+        return this.toString();
+    }
 
     @Override
     public String toString() {

@@ -1,0 +1,12 @@
+VBox, HBox {
+    -fx-spacing: 10;
+}
+
+.padding-pane {
+    -fx-padding: 10;
+}
+
+.split-pane-divider {
+   -fx-border-color: transparent;
+   -fx-background-color: transparent;
+}
