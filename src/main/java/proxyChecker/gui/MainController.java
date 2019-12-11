@@ -99,10 +99,6 @@ public class MainController implements Initializable, Checker.CheckingListener {
         }
     }
 
-    private void onFinish() {
-        log("Checking complete");
-    }
-
     private List<ExtendedProxy> getProxies(String input) {
         List<ExtendedProxy> proxies = new ArrayList<>();
         String[] lines = input.split("\n");
@@ -129,11 +125,20 @@ public class MainController implements Initializable, Checker.CheckingListener {
     }
 
     @Override
-    public void onCheckComplete(boolean isFinished) {
+    public void onCheckComplete(ExtendedProxy proxy) {
         outputTable.refresh();
-        if (isFinished) onFinish();
+        log(String.format("%-30s%-22s%s", proxy, "Response code: " + proxy.getLastCode(), "Response time: " + proxy.getLastResponseTime()));
+        progBar.setProgress(checker.getProgress());
+        Platform.runLater(() -> progLbl.setText(String.format("%.1f", checker.getProgress() * 100) + "%"));
 
     }
+
+    @Override
+    public void onFinish() {
+        log("Checking complete");
+    }
+
+
 
     private void log(String log) {
         String curTime = new SimpleDateFormat("HH:mm:ss").format(new Date());

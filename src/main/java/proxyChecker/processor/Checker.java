@@ -7,9 +7,10 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 
 public class Checker implements Loader.LoadingListener {
-    private int maxThreads = 1;
+    private int maxThreads = 5;
     private int threads;
-    private int checksCount = 1;
+    private int checksCount = 5;
+    private int processedCount;
     private int timeout = 5000;
     private String url;
     private boolean isRunning = false;
@@ -31,7 +32,7 @@ public class Checker implements Loader.LoadingListener {
 
     public void stop() {
         isRunning = false;
-        checkingListener.onCheckComplete(true);
+        checkingListener.onFinish();
     }
 
     private void createLoaders() {
@@ -50,16 +51,21 @@ public class Checker implements Loader.LoadingListener {
     @Override
     public synchronized void onLoadingComplete(ExtendedProxy extProxy) {
         threads--;
-        if (isRunning)
+        processedCount++;
+        if (isRunning) {
+            checkingListener.onCheckComplete(extProxy);
             if (threads == 0 && loaders.isEmpty()) stop();
-            else {
-                checkingListener.onCheckComplete(false);
-                runNewLoaders();
-            }
+            else runNewLoaders();
+        }
     }
 
     public interface CheckingListener {
-        void onCheckComplete(boolean isFinished);
+        void onCheckComplete(ExtendedProxy extProxy);
+        void onFinish();
+    }
+
+    public double getProgress() {
+        return processedCount * 1.0 / (proxies.size() * checksCount);
     }
 
     public int getMaxThreads() {

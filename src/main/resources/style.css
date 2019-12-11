@@ -19,3 +19,13 @@ VBox, HBox {
     -fx-cell-size: 20;
     -fx-font-size: 0.9em;
 }
+
+.progress-bar {
+    -fx-min-height: 20;
+    -fx-max-width: Infinity;
+}
+
+.console {
+    -fx-font-family: Consolas;
+    -fx-text-fill: #555555;
+}

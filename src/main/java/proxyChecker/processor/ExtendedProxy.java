@@ -65,6 +65,22 @@ public class ExtendedProxy {
         return responseTimeList.size();
     }
 
+    public Integer getLastCode() {
+        return responsesCodes.isEmpty() ? null : responsesCodes.get(responsesCodes.size() - 1);
+    }
+
+    public Long getLastResponseTime() {
+        return responseTimeList.isEmpty() ? null : responseTimeList.get(responseTimeList.size() - 1);
+    }
+
+    public List<Long> getResponseTimeList() {
+        return responseTimeList;
+    }
+
+    public List<Integer> getResponsesCodes() {
+        return responsesCodes;
+    }
+
     public Proxy getProxy() {
         return proxy;
     }

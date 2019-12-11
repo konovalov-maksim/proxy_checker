@@ -61,6 +61,6 @@
             </columns>
         </TableView>
     </VBox>
-    <TextArea fx:id="consoleTa" editable="false"/>
+    <TextArea fx:id="consoleTa" editable="false" styleClass="console"/>
 </SplitPane>
 
