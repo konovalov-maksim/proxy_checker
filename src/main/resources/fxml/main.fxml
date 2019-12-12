@@ -17,6 +17,8 @@
 
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.layout.GridPane?>
 <SplitPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
            xmlns:fx="http://javafx.com/fxml/1" fx:controller="proxyChecker.gui.MainController" orientation="VERTICAL"
            dividerPositions="0.3, 0.85" styleClass="padding-pane">
@@ -25,10 +27,22 @@
             <VBox styleClass="padding-pane">
                 <HBox>
                     <Label text="URL:"/>
-                    <TextField fx:id="urlTf" text="https://google.com"/>
+                    <TextField fx:id="urlTf" HBox.hgrow="ALWAYS"/>
                 </HBox>
-                <Label text="Proxies list"/>
-                <TextArea fx:id="inputTa"/>
+                <HBox>
+                    <VBox HBox.hgrow="NEVER">
+                        <Label text="Proxies list"/>
+                        <TextArea fx:id="inputTa"/>
+                    </VBox>
+                    <GridPane styleClass="spaced-grid-pane" HBox.hgrow="ALWAYS">
+                        <Label GridPane.rowIndex="0" GridPane.columnIndex="0" text="Timeout:"/>
+                        <TextField GridPane.rowIndex="0" GridPane.columnIndex="1" fx:id="timeoutTf"/>
+                        <Label GridPane.rowIndex="1" GridPane.columnIndex="0" text="Threads:"/>
+                        <Spinner GridPane.rowIndex="1" GridPane.columnIndex="1" fx:id="threadsSpn"/>
+                        <Label GridPane.rowIndex="2" GridPane.columnIndex="0" text="Checks:"/>
+                        <Spinner GridPane.rowIndex="2" GridPane.columnIndex="1" fx:id="checksSpn"/>
+                    </GridPane>
+                </HBox>
             </VBox>
         </Tab>
         <Tab text="HTTP headers">

@@ -100,4 +100,15 @@ public class Checker implements Loader.LoadingListener {
         this.url = url;
     }
 
+    public int getThreads() {
+        return threads;
+    }
+
+    public int getProcessedCount() {
+        return processedCount;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
 }

@@ -23,17 +23,18 @@ public class MainController implements Initializable, Checker.CheckingListener {
 
     private final Pattern ipPattern = Pattern.compile("^$|^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]):[0-9]+$");
 
-    @FXML
-    private TextArea inputTa;
-    @FXML
-    private TextField urlTf;
-    @FXML
-    private ProgressBar progBar;
-    @FXML
-    private Label progLbl;
+    //General tab
+    @FXML private TextArea inputTa;
+    @FXML private TextField urlTf;
+    @FXML private TextField timeoutTf;
+    @FXML private Spinner<Integer> threadsSpn;
+    @FXML private Spinner<Integer> checksSpn;
 
-    @FXML
-    private TableView<ExtendedProxy> outputTable;
+    //body
+    @FXML  private ProgressBar progBar;
+    @FXML private Label progLbl;
+
+    @FXML private TableView<ExtendedProxy> outputTable;
     @FXML private TableColumn<ExtendedProxy, String> ipCol;
     @FXML private TableColumn<ExtendedProxy, String> addressCol;
     @FXML private TableColumn<ExtendedProxy, Integer> portCol;
@@ -41,8 +42,8 @@ public class MainController implements Initializable, Checker.CheckingListener {
     @FXML private TableColumn<ExtendedProxy, Long> avgTimeCol;
     @FXML private TableColumn<ExtendedProxy, Boolean> isAllOkCol;
 
-    @FXML
-    private TextArea consoleTa;
+    //console
+    @FXML private TextArea consoleTa;
 
     private Checker checker;
 
@@ -50,6 +51,10 @@ public class MainController implements Initializable, Checker.CheckingListener {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //general tab
+        urlTf.setText(Prefs.getString("url"));
+
+        //body
         ipCol.prefWidthProperty().bind(outputTable.widthProperty().multiply(0.1));
         addressCol.prefWidthProperty().bind(outputTable.widthProperty().multiply(0.4));
         portCol.prefWidthProperty().bind(outputTable.widthProperty().multiply(0.1));
@@ -62,9 +67,7 @@ public class MainController implements Initializable, Checker.CheckingListener {
         checksCol.setCellValueFactory(new PropertyValueFactory<>("checksCount"));
         avgTimeCol.setCellValueFactory(new PropertyValueFactory<>("avgTime"));
         isAllOkCol.setCellValueFactory(new PropertyValueFactory<>("isAllOk"));
-
         TableContextMenu contextMenu = new TableContextMenu(outputTable);
-
         outputTable.setItems(proxies);
 
     }
@@ -87,6 +90,18 @@ public class MainController implements Initializable, Checker.CheckingListener {
         }
         checker = new Checker(urlTf.getText(), proxies, this);
         //TODO setChecksCount, setTimeout
+        //timeout
+        try {
+            checker.setTimeout(Integer.parseInt(timeoutTf.getText()));
+        } catch (Exception e) {
+            log("Incorrect timeout specified. The default timeout is set (" + checker.getTimeout() + "ms)");
+        }
+        try {
+            checker.setTimeout(Integer.parseInt(timeoutTf.getText()));
+        } catch (Exception e) {
+            log("Incorrect timeout specified. The default timeout is set (" + checker.getTimeout() + "ms)");
+        }
+
         checker.start();
         log("Checking started");
     }
