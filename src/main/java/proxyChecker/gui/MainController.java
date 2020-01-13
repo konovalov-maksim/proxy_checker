@@ -52,7 +52,10 @@ public class MainController implements Initializable, Checker.CheckingListener {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //general tab
-        urlTf.setText(Prefs.getString("url"));
+        urlTf.setText(Prefs.getString(Prefs.Key.URL));
+        threadsSpn.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, Prefs.getInt(Prefs.Key.THREADS)));
+        checksSpn.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, Prefs.getInt(Prefs.Key.CHECKS)));
+        timeoutTf.setText(String.valueOf(Prefs.getInt(Prefs.Key.TIMEOUT)));
 
         //body
         ipCol.prefWidthProperty().bind(outputTable.widthProperty().multiply(0.1));
@@ -69,6 +72,7 @@ public class MainController implements Initializable, Checker.CheckingListener {
         isAllOkCol.setCellValueFactory(new PropertyValueFactory<>("isAllOk"));
         TableContextMenu contextMenu = new TableContextMenu(outputTable);
         outputTable.setItems(proxies);
+
 
     }
 
@@ -89,21 +93,21 @@ public class MainController implements Initializable, Checker.CheckingListener {
             return;
         }
         checker = new Checker(urlTf.getText(), proxies, this);
-        //TODO setChecksCount, setTimeout
+        checker.setChecksCount(checksSpn.getValue());
+        checker.setMaxThreads(threadsSpn.getValue());
+        Prefs.put(Prefs.Key.CHECKS, checksSpn.getValue());
+        Prefs.put(Prefs.Key.THREADS, threadsSpn.getValue());
         //timeout
         try {
-            checker.setTimeout(Integer.parseInt(timeoutTf.getText()));
-        } catch (Exception e) {
-            log("Incorrect timeout specified. The default timeout is set (" + checker.getTimeout() + "ms)");
-        }
-        try {
-            checker.setTimeout(Integer.parseInt(timeoutTf.getText()));
+            int timeout = Integer.parseInt(timeoutTf.getText());
+            checker.setTimeout(timeout);
+            Prefs.put(Prefs.Key.TIMEOUT, timeout);
         } catch (Exception e) {
             log("Incorrect timeout specified. The default timeout is set (" + checker.getTimeout() + "ms)");
         }
 
-        checker.start();
         log("Checking started");
+        checker.start();
     }
 
     @FXML

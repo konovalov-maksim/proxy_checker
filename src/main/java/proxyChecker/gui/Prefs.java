@@ -9,49 +9,52 @@ public class Prefs {
 
     private Prefs() {}
 
+    public enum Key{
+        URL, TIMEOUT, THREADS, CHECKS
+    }
+
     static {
         preferences = Preferences.userNodeForPackage(Prefs.class);
 
-        defaults.put("url", "https://www.google.com/");
-        defaults.put("timeout", 4000);
-        defaults.put("threads", 5);
-        defaults.put("checks", 1);
-
+        defaults.put(Key.URL.name(), "https://www.google.com/");
+        defaults.put(Key.TIMEOUT.name(), 4000);
+        defaults.put(Key.THREADS.name(), 5);
+        defaults.put(Key.CHECKS.name(), 1);
     }
 
-    public static int getInt(String propName) {
-        return preferences.getInt(propName, (int) defaults.get(propName));
+    public static int getInt(Key key) {
+        return preferences.getInt(key.name(), (int) defaults.get(key.name()));
     }
 
-    public static double getDouble(String propName) {
-        return preferences.getDouble(propName, (double) defaults.get(propName));
+    public static double getDouble(Key key) {
+        return preferences.getDouble(key.name(), (double) defaults.get(key.name()));
     }
 
-    public static String getString(String propName) {
-        return preferences.get(propName, (String) defaults.get(propName));
+    public static String getString(Key key) {
+        return preferences.get(key.name(), (String) defaults.get(key.name()));
     }
 
     public static boolean getBoolean(String propName) {
         return preferences.getBoolean(propName, (boolean) defaults.get(propName));
     }
 
-    public static void put(String propName, String value) {
-        preferences.put(propName, value);
+    public static void put(Key key, String value) {
+        preferences.put(key.name(), value);
     }
 
-    public static void put(String propName, int value) {
-        preferences.put(propName, String.valueOf(value));
+    public static void put(Key key, int value) {
+        preferences.put(key.name(), String.valueOf(value));
     }
 
-    public static void put(String propName, double value) {
-        preferences.put(propName, String.valueOf(value));
+    public static void put(Key key, double value) {
+        preferences.put(key.name(), String.valueOf(value));
     }
 
-    public static void put(String propName, boolean value) {
-        preferences.put(propName, String.valueOf(value));
+    public static void put(Key key, boolean value) {
+        preferences.put(key.name(), String.valueOf(value));
     }
 
-    public static void remove(String propName) {
-        preferences.remove(propName);
+    public static void remove(Key key) {
+        preferences.remove(key.name());
     }
 }
