@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import okhttp3.internal.http2.Header;
 import proxyChecker.core.Checker;
 import proxyChecker.core.ExtendedProxy;
 
@@ -35,12 +36,15 @@ public class MainController implements Initializable, Checker.CheckingListener {
     @FXML private Label progLbl;
 
     @FXML private TableView<ExtendedProxy> outputTable;
+    @FXML private TableView<Header> headersTable;
     @FXML private TableColumn<ExtendedProxy, String> ipCol;
     @FXML private TableColumn<ExtendedProxy, String> addressCol;
     @FXML private TableColumn<ExtendedProxy, Integer> portCol;
     @FXML private TableColumn<ExtendedProxy, Integer> checksCol;
     @FXML private TableColumn<ExtendedProxy, Long> avgTimeCol;
     @FXML private TableColumn<ExtendedProxy, Boolean> isAllOkCol;
+    @FXML private TableColumn<Header, String> headerNameCol;
+    @FXML private TableColumn<Header, String> headerValueCol;
 
     //console
     @FXML private TextArea consoleTa;
@@ -51,11 +55,16 @@ public class MainController implements Initializable, Checker.CheckingListener {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         //general tab
         urlTf.setText(Prefs.getString(Prefs.Key.URL));
         threadsSpn.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, Prefs.getInt(Prefs.Key.THREADS)));
         checksSpn.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, Prefs.getInt(Prefs.Key.CHECKS)));
         timeoutTf.setText(String.valueOf(Prefs.getInt(Prefs.Key.TIMEOUT)));
+
+        //Headers tab
+        headerNameCol.prefWidthProperty().bind(headersTable.widthProperty().multiply(0.3));
+        headerValueCol.prefWidthProperty().bind(headersTable.widthProperty().multiply(0.7));
 
         //body
         ipCol.prefWidthProperty().bind(outputTable.widthProperty().multiply(0.1));

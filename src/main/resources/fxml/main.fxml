@@ -45,12 +45,21 @@
             </VBox>
         </Tab>
         <Tab text="HTTP headers">
-            <VBox>
-            </VBox>
-        </Tab>
-        <Tab text="Cookies">
-            <VBox>
-            </VBox>
+            <HBox styleClass="padding-pane">
+                <VBox HBox.hgrow="NEVER">
+                    <Label text="Headers, each on a new line (Key: Value) :"/>
+                    <TextArea fx:id="headersTa"/>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Added headers: "/>
+                    <TableView fx:id="headersTable">
+                        <columns>
+                            <TableColumn fx:id="headerNameCol" text="Name"/>
+                            <TableColumn fx:id="headerValueCol" text="Value"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </HBox>
         </Tab>
     </TabPane>
     <VBox>

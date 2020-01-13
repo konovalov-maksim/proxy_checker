@@ -20,7 +20,7 @@ VBox, HBox {
     -fx-font-size: 0.9em;
 }
 
-.spaced-grid-pane Label{ {
+.spaced-grid-pane Label {
     -fx-alignment: center-right;
     -fx-max-width: Infinity;
     -fx-padding: 10;
