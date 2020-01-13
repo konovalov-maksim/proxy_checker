@@ -7,8 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import proxyChecker.processor.Checker;
-import proxyChecker.processor.ExtendedProxy;
+import proxyChecker.core.Checker;
+import proxyChecker.core.ExtendedProxy;
 
 
 import java.net.URL;

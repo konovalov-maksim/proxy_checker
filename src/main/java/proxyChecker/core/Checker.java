@@ -1,4 +1,4 @@
-package proxyChecker.processor;
+package proxyChecker.core;
 
 import java.util.ArrayList;
 import java.util.Deque;

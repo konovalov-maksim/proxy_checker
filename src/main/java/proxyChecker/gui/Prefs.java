@@ -16,22 +16,22 @@ public class Prefs {
     static {
         preferences = Preferences.userNodeForPackage(Prefs.class);
 
-        defaults.put(Key.URL.name(), "https://www.google.com/");
-        defaults.put(Key.TIMEOUT.name(), 4000);
-        defaults.put(Key.THREADS.name(), 5);
-        defaults.put(Key.CHECKS.name(), 1);
+        defaults.put(Key.URL.name().toLowerCase(), "https://www.google.com/");
+        defaults.put(Key.TIMEOUT.name().toLowerCase(), 4000);
+        defaults.put(Key.THREADS.name().toLowerCase(), 5);
+        defaults.put(Key.CHECKS.name().toLowerCase(), 1);
     }
 
     public static int getInt(Key key) {
-        return preferences.getInt(key.name(), (int) defaults.get(key.name()));
+        return preferences.getInt(key.name().toLowerCase(), (int) defaults.get(key.name().toLowerCase()));
     }
 
     public static double getDouble(Key key) {
-        return preferences.getDouble(key.name(), (double) defaults.get(key.name()));
+        return preferences.getDouble(key.name().toLowerCase(), (double) defaults.get(key.name().toLowerCase()));
     }
 
     public static String getString(Key key) {
-        return preferences.get(key.name(), (String) defaults.get(key.name()));
+        return preferences.get(key.name().toLowerCase(), (String) defaults.get(key.name().toLowerCase()));
     }
 
     public static boolean getBoolean(String propName) {
@@ -39,22 +39,22 @@ public class Prefs {
     }
 
     public static void put(Key key, String value) {
-        preferences.put(key.name(), value);
+        preferences.put(key.name().toLowerCase(), value);
     }
 
     public static void put(Key key, int value) {
-        preferences.put(key.name(), String.valueOf(value));
+        preferences.put(key.name().toLowerCase(), String.valueOf(value));
     }
 
     public static void put(Key key, double value) {
-        preferences.put(key.name(), String.valueOf(value));
+        preferences.put(key.name().toLowerCase(), String.valueOf(value));
     }
 
     public static void put(Key key, boolean value) {
-        preferences.put(key.name(), String.valueOf(value));
+        preferences.put(key.name().toLowerCase(), String.valueOf(value));
     }
 
     public static void remove(Key key) {
-        preferences.remove(key.name());
+        preferences.remove(key.name().toLowerCase());
     }
 }

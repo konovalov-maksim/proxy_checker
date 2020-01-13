@@ -1,4 +1,4 @@
-package proxyChecker.processor;
+package proxyChecker.core;
 
 
 import okhttp3.*;
