@@ -12,7 +12,7 @@ class Loader implements Callback {
     private Request request;
     private LoadingListener loadingListener;
 
-    Loader(ExtendedProxy extProxy, long timeout, String url, LoadingListener loadingListener) {
+    Loader(ExtendedProxy extProxy, long timeout, String url, Headers headers, LoadingListener loadingListener) {
         this.extProxy = extProxy;
         this.loadingListener = loadingListener;
         if (extProxy.getLogin() != null && extProxy.getPass() != null)
@@ -27,6 +27,7 @@ class Loader implements Callback {
                 .build();
         request = new Request.Builder()
                 .url(url)
+                .headers(headers)
                 .build();
     }
 

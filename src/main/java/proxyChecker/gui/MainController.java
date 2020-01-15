@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import okhttp3.internal.http2.Header;
+import okhttp3.Headers;
 import proxyChecker.core.Checker;
 import proxyChecker.core.ExtendedProxy;
 import proxyChecker.core.SimpleHeader;
@@ -113,6 +113,7 @@ public class MainController implements Initializable, Checker.CheckingListener {
         checker = new Checker(urlTf.getText(), proxies, this);
         checker.setChecksCount(checksSpn.getValue());
         checker.setMaxThreads(threadsSpn.getValue());
+        if (!headers.isEmpty()) checker.setHeaders(getHeaders(headers));
         Prefs.put(Prefs.Key.CHECKS, checksSpn.getValue());
         Prefs.put(Prefs.Key.THREADS, threadsSpn.getValue());
         //timeout
@@ -190,6 +191,13 @@ public class MainController implements Initializable, Checker.CheckingListener {
     @Override
     public void onFinish() {
         log("Checking complete");
+    }
+
+    private static Headers getHeaders(List<SimpleHeader> simpleHeaders) {
+        Headers headers = new Headers.Builder().build();
+        for (SimpleHeader simpleHeader: simpleHeaders)
+            headers.newBuilder().add(simpleHeader.getName(), simpleHeader.getValue()).build();
+        return headers;
     }
 
     private void log(String log) {

@@ -1,5 +1,7 @@
 package proxyChecker.core;
 
+import okhttp3.Headers;
+
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
@@ -17,6 +19,8 @@ public class Checker implements Loader.LoadingListener {
     private Deque<Loader> loaders = new ConcurrentLinkedDeque<>();
     private List<ExtendedProxy> proxies = new ArrayList<>();
     private CheckingListener checkingListener;
+    private Headers headers = new Headers.Builder()
+            .add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0").build();
 
     public Checker(String url, List<ExtendedProxy> proxies, CheckingListener checkingListener) {
         this.url = url;
@@ -110,5 +114,13 @@ public class Checker implements Loader.LoadingListener {
 
     public boolean isRunning() {
         return isRunning;
+    }
+
+    public Headers getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(Headers headers) {
+        this.headers = headers;
     }
 }
