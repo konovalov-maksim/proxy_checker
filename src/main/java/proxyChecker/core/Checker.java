@@ -42,7 +42,7 @@ public class Checker implements Loader.LoadingListener {
     private void createLoaders() {
         for (int i = 0; i < checksCount; i++)
             for (ExtendedProxy extProxy : proxies)
-                loaders.add(new Loader(extProxy, timeout, url, this));
+                loaders.add(new Loader(extProxy, timeout, url, headers, this));
     }
 
     private void runNewLoaders() {
