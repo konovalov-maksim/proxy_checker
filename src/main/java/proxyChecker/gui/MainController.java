@@ -3,6 +3,7 @@ package proxyChecker.gui;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -10,14 +11,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import okhttp3.internal.http2.Header;
 import proxyChecker.core.Checker;
 import proxyChecker.core.ExtendedProxy;
+import proxyChecker.core.HeaderWrapper;
 
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class MainController implements Initializable, Checker.CheckingListener {
@@ -31,27 +30,33 @@ public class MainController implements Initializable, Checker.CheckingListener {
     @FXML private Spinner<Integer> threadsSpn;
     @FXML private Spinner<Integer> checksSpn;
 
+    //Headers tab
+    @FXML private TextArea headersTa;
+    @FXML private TableView<HeaderWrapper> headersTable;
+    @FXML private TableColumn<HeaderWrapper, String> headerNameCol;
+    @FXML private TableColumn<HeaderWrapper, String> headerValueCol;
+
     //body
     @FXML  private ProgressBar progBar;
     @FXML private Label progLbl;
 
     @FXML private TableView<ExtendedProxy> outputTable;
-    @FXML private TableView<Header> headersTable;
+
     @FXML private TableColumn<ExtendedProxy, String> ipCol;
     @FXML private TableColumn<ExtendedProxy, String> addressCol;
     @FXML private TableColumn<ExtendedProxy, Integer> portCol;
     @FXML private TableColumn<ExtendedProxy, Integer> checksCol;
     @FXML private TableColumn<ExtendedProxy, Long> avgTimeCol;
     @FXML private TableColumn<ExtendedProxy, Boolean> isAllOkCol;
-    @FXML private TableColumn<Header, String> headerNameCol;
-    @FXML private TableColumn<Header, String> headerValueCol;
+
 
     //console
     @FXML private TextArea consoleTa;
 
     private Checker checker;
 
-    private ObservableList<ExtendedProxy> proxies = FXCollections.observableArrayList();;
+    private ObservableList<ExtendedProxy> proxies = FXCollections.observableArrayList();
+    private ObservableList<HeaderWrapper> headers = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -65,6 +70,11 @@ public class MainController implements Initializable, Checker.CheckingListener {
         //Headers tab
         headerNameCol.prefWidthProperty().bind(headersTable.widthProperty().multiply(0.3));
         headerValueCol.prefWidthProperty().bind(headersTable.widthProperty().multiply(0.7));
+        headerNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        headerValueCol.setCellValueFactory(new PropertyValueFactory<>("value"));
+        headersTable.setItems(headers);
+        TableContextMenu headersMenu = new TableContextMenu(headersTable);
+        headersMenu.getCopyColItem().setVisible(false);
 
         //body
         ipCol.prefWidthProperty().bind(outputTable.widthProperty().multiply(0.1));
@@ -79,9 +89,9 @@ public class MainController implements Initializable, Checker.CheckingListener {
         checksCol.setCellValueFactory(new PropertyValueFactory<>("checksCount"));
         avgTimeCol.setCellValueFactory(new PropertyValueFactory<>("avgTime"));
         isAllOkCol.setCellValueFactory(new PropertyValueFactory<>("isAllOk"));
-        TableContextMenu contextMenu = new TableContextMenu(outputTable);
+        outputTable.getSelectionModel().setCellSelectionEnabled(true);
+        new TableContextMenu(outputTable);
         outputTable.setItems(proxies);
-
 
     }
 
@@ -120,13 +130,31 @@ public class MainController implements Initializable, Checker.CheckingListener {
     }
 
     @FXML
-    public void stop() {
+    private void stop() {
         if (checker != null) {
             checker.stop();
             onFinish();
         }
     }
 
+    @FXML
+    private void addHeaders() {
+        if (headersTa.getText() == null || headersTa.getText().isEmpty()) return;
+        for (String header : headersTa.getText().split("\n")) {
+            String[] tokens = header.split(":\\s*");
+            if (tokens.length != 2) continue;
+            HeaderWrapper oldHeader = headers.stream().filter(h -> h.getName().equals(tokens[0])).findAny().orElse(null);
+            if (oldHeader != null) oldHeader.setHeader(new Header(tokens[0], tokens[1]));
+            else headers.add(new HeaderWrapper(tokens[0], tokens[1]));
+        }
+        headersTable.refresh();
+    }
+
+    @FXML
+    private void removeHeaders() {
+        headers.clear();
+        headersTable.refresh();
+    }
     private List<ExtendedProxy> getProxies(String input) {
         List<ExtendedProxy> proxies = new ArrayList<>();
         String[] lines = input.split("\n");
@@ -158,15 +186,12 @@ public class MainController implements Initializable, Checker.CheckingListener {
         log(String.format("%-30s%-22s%s", proxy, "Response code: " + proxy.getLastCode(), "Response time: " + proxy.getLastResponseTime()));
         progBar.setProgress(checker.getProgress());
         Platform.runLater(() -> progLbl.setText(String.format("%.1f", checker.getProgress() * 100) + "%"));
-
     }
 
     @Override
     public void onFinish() {
         log("Checking complete");
     }
-
-
 
     private void log(String log) {
         String curTime = new SimpleDateFormat("HH:mm:ss").format(new Date());

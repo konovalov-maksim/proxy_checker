@@ -9,7 +9,6 @@ public class TableContextMenu extends ContextMenu {
     public <S> TableContextMenu(TableView<S> table) {
 
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        table.getSelectionModel().setCellSelectionEnabled(true);
 
         //Пункт "Копирование выделенных ячеек"
         MenuItem copyItem = new MenuItem("Copy");

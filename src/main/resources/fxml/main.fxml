@@ -50,6 +50,10 @@
                     <Label text="Headers, each on a new line (Key: Value) :"/>
                     <TextArea fx:id="headersTa"/>
                 </VBox>
+                <VBox alignment="CENTER" prefWidth="60">
+                    <Button text="Add" prefWidth="Infinity" onAction="#addHeaders"/>
+                    <Button text="Clear" prefWidth="Infinity" onAction="#removeHeaders"/>
+                </VBox>
                 <VBox HBox.hgrow="ALWAYS">
                     <Label text="Added headers: "/>
                     <TableView fx:id="headersTable">
