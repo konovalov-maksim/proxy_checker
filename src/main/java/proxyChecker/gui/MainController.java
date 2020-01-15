@@ -3,7 +3,6 @@ package proxyChecker.gui;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -11,7 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import okhttp3.internal.http2.Header;
 import proxyChecker.core.Checker;
 import proxyChecker.core.ExtendedProxy;
-import proxyChecker.core.HeaderWrapper;
+import proxyChecker.core.SimpleHeader;
 
 
 import java.net.URL;
@@ -32,9 +31,9 @@ public class MainController implements Initializable, Checker.CheckingListener {
 
     //Headers tab
     @FXML private TextArea headersTa;
-    @FXML private TableView<HeaderWrapper> headersTable;
-    @FXML private TableColumn<HeaderWrapper, String> headerNameCol;
-    @FXML private TableColumn<HeaderWrapper, String> headerValueCol;
+    @FXML private TableView<SimpleHeader> headersTable;
+    @FXML private TableColumn<SimpleHeader, String> headerNameCol;
+    @FXML private TableColumn<SimpleHeader, String> headerValueCol;
 
     //body
     @FXML  private ProgressBar progBar;
@@ -56,7 +55,7 @@ public class MainController implements Initializable, Checker.CheckingListener {
     private Checker checker;
 
     private ObservableList<ExtendedProxy> proxies = FXCollections.observableArrayList();
-    private ObservableList<HeaderWrapper> headers = FXCollections.observableArrayList();
+    private ObservableList<SimpleHeader> headers = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -143,9 +142,9 @@ public class MainController implements Initializable, Checker.CheckingListener {
         for (String header : headersTa.getText().split("\n")) {
             String[] tokens = header.split(":\\s*");
             if (tokens.length != 2) continue;
-            HeaderWrapper oldHeader = headers.stream().filter(h -> h.getName().equals(tokens[0])).findAny().orElse(null);
-            if (oldHeader != null) oldHeader.setHeader(new Header(tokens[0], tokens[1]));
-            else headers.add(new HeaderWrapper(tokens[0], tokens[1]));
+            SimpleHeader oldHeader = headers.stream().filter(h -> h.getName().equals(tokens[0])).findAny().orElse(null);
+            if (oldHeader != null) oldHeader.setValue(tokens[1]);
+            else headers.add(new SimpleHeader(tokens[0], tokens[1]));
         }
         headersTable.refresh();
     }
