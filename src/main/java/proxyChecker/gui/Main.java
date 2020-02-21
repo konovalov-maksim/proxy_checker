@@ -19,6 +19,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"), rb);
         Parent root = loader.load();
         root.getStylesheets().add("/style.css");
+        root.getStylesheets().add("/bootstrap3.css");
         stage.setTitle("Proxy Checker");
         //stage.getIcons().add();
         stage.setScene(new Scene(root));
