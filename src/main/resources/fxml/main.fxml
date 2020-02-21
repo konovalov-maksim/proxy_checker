@@ -48,7 +48,7 @@
             <HBox styleClass="padding-pane">
                 <VBox HBox.hgrow="NEVER">
                     <Label text="Headers, each on a new line (Key: Value) :"/>
-                    <TextArea fx:id="headersTa"/>
+                    <TextArea fx:id="headersTa" VBox.vgrow="ALWAYS"/>
                 </VBox>
                 <VBox alignment="CENTER" prefWidth="60">
                     <Button text="Add" prefWidth="Infinity" onAction="#addHeaders"/>
@@ -69,7 +69,7 @@
     <VBox>
         <Separator/>
         <HBox>
-            <Button onAction="#start" text="Let's go!"/>
+            <Button onAction="#start" text="Start checking"/>
             <Button onAction="#stop" text="Stop"/>
             <StackPane HBox.hgrow="ALWAYS">
                 <ProgressBar fx:id="progBar" progress="0.0"/>

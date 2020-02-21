@@ -1,11 +1,13 @@
 package proxyChecker.gui;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import okhttp3.Headers;
 import proxyChecker.core.Checker;
@@ -87,7 +89,8 @@ public class MainController implements Initializable, Checker.CheckingListener {
         portCol.setCellValueFactory(new PropertyValueFactory<>("port"));
         checksCol.setCellValueFactory(new PropertyValueFactory<>("checksCount"));
         avgTimeCol.setCellValueFactory(new PropertyValueFactory<>("avgTime"));
-        isAllOkCol.setCellValueFactory(new PropertyValueFactory<>("isAllOk"));
+        isAllOkCol.setCellValueFactory(c -> new SimpleBooleanProperty(c.getValue().getIsAllOk()));
+        isAllOkCol.setCellFactory(tc -> new CheckBoxTableCell<>());
         outputTable.getSelectionModel().setCellSelectionEnabled(true);
         new TableContextMenu(outputTable);
         outputTable.setItems(proxies);

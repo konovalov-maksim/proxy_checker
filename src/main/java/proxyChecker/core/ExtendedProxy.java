@@ -53,6 +53,7 @@ public class ExtendedProxy {
     }
 
     public boolean getIsAllOk() {
+        if (responsesCodes == null || responsesCodes.isEmpty()) return false;
         for (Integer code : responsesCodes) if (code != 200) return false;
         return true;
     }
