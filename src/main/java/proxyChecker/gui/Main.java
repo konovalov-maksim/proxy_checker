@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
@@ -21,7 +22,7 @@ public class Main extends Application {
         root.getStylesheets().add("/style.css");
         root.getStylesheets().add("/bootstrap3.css");
         stage.setTitle("Proxy Checker");
-        //stage.getIcons().add();
+        stage.getIcons().add(new Image("app_icon.png"));
         stage.setScene(new Scene(root));
 
         stage.show();
