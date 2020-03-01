@@ -117,6 +117,7 @@ public class MainController implements Initializable, Checker.CheckingListener {
         checker.setChecksCount(checksSpn.getValue());
         checker.setMaxThreads(threadsSpn.getValue());
         if (!headers.isEmpty()) checker.setHeaders(getHeaders(headers));
+        Prefs.put(Prefs.Key.URL, urlTf.getText());
         Prefs.put(Prefs.Key.CHECKS, checksSpn.getValue());
         Prefs.put(Prefs.Key.THREADS, threadsSpn.getValue());
         //timeout
