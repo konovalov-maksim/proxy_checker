@@ -44,6 +44,7 @@ class Loader implements Callback {
 
     @Override
     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+        if (response.body() != null) response.body().close();
         extProxy.addResponseCode(response.code());
         extProxy.addResponseTime(response.receivedResponseAtMillis() - response.sentRequestAtMillis());
         loadingListener.onLoadingComplete(extProxy);
