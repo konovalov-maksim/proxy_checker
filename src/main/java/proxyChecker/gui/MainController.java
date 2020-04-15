@@ -142,6 +142,12 @@ public class MainController implements Initializable, Checker.CheckingListener {
     }
 
     @FXML
+    private void clear() {
+        proxies.clear();
+        outputTable.refresh();
+    }
+
+    @FXML
     private void addHeaders() {
         if (headersTa.getText() == null || headersTa.getText().isEmpty()) return;
         for (String header : headersTa.getText().split("\n")) {
